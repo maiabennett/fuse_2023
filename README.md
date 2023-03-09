@@ -12,3 +12,6 @@ Natural killer (NK) cells are an integral component of the human immune system w
 ## General overview of the analysis
 
 ![analytical_overview](https://user-images.githubusercontent.com/123126475/224165084-b904e348-ff48-4b8e-9f49-6ea3562729fb.png)
+
+## License
+This repository uses the MIT License. 
