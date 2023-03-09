@@ -1,0 +1,290 @@
+
+# Untreated-direct killing comparisons
+percentages <-GetFeatures(fsom = fsom_untreated,
+                            files = paste0(dir_u_prep, files_untreated),
+                            type = "percentages")
+                            
+# Low-moderate comparison
+groups.ud3.l.m <- list("Low-killing" = paste0(dir_u_prep, files_untreated[c(2,3,5,6)]),
+                  "Moderate-killing" = paste0(dir_u_prep, files_untreated[c(4,8)]))
+MC_stats.ud3.lm <- GroupStats(percentages[["metacluster_percentages"]], groups.ud3.l.m)
+C_stats.ud3.lm <- GroupStats(percentages[["cluster_percentages"]], groups.ud3.l.m)
+fold_changes.ud3.lm <- C_stats.ud3.lm["fold changes", ]
+fold_changes.ud3.lm <- factor(ifelse(fold_changes.ud3.lm < -1, "Underrepresented compared to low killing group",
+                                 ifelse(fold_changes.ud3.lm > 1, "Overrepresented compared to low killing group",
+                                        "--")), levels = c("--", "Underrepresented compared to low killing group",
+                                                           "Overrepresented compared to low killing group"))
+fold_changes.ud3.lm[is.na(fold_changes.ud3.lm)] <- "--"
+sbs.ud3.low <- PlotStars(fsom_untreated, title = "Low killing donors",
+                      nodeSizes = C_stats.ud3.lm["medians Low-killing", ],
+                      refNodeSize = max(C_stats.ud3.lm[c("medians Low-killing", "medians Moderate-killing"),]),
+                      backgroundValues = fold_changes.ud3.lm,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+sbs.ud3.mod <- PlotStars(fsom_untreated, title = "Moderate killing donors",
+                      nodeSizes = C_stats.ud3.lm["medians Moderate-killing", ],
+                      refNodeSize = max(C_stats.ud3.lm[c("medians Low-killing", "medians Moderate-killing"),]),
+                      backgroundValues = fold_changes.ud3.lm,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+untreateddirect3.lm <- ggpubr::ggarrange(plotlist = list(sbs.ud3.low$tree, sbs.ud3.mod$tree,
+                                       sbs.ud3.mod$starLegend, sbs.ud3.mod$backgroundLegend),
+                       ncol = 2, nrow = 2,
+                       heights = c(4, 1))
+                       
+# Low-high comparison
+groups.ud3.l.h <- list("Low-killing" = paste0(dir_u_prep, files_untreated[c(2,3,5,6)]),
+                  "High-killing" = paste0(dir_u_prep, files_untreated[c(7,9)]))
+MC_stats.ud3.lh <- GroupStats(percentages[["metacluster_percentages"]], groups.ud3.l.h)
+C_stats.ud3.lh <- GroupStats(percentages[["cluster_percentages"]], groups.ud3.l.h)
+fold_changes.ud3.lh <- C_stats.ud3.lh["fold changes", ]
+fold_changes.ud3.lh <- factor(ifelse(fold_changes.ud3.lh < -1, "Underrepresented compared to low killing group",
+                                 ifelse(fold_changes.ud3.lh > 1, "Overrepresented compared to low killing group",
+                                        "--")), levels = c("--", "Underrepresented compared to low killing group",
+                                                           "Overrepresented compared to low killing group"))
+fold_changes.ud3.lh[is.na(fold_changes.ud3.lh)] <- "--"
+sbs.ud3.low <- PlotStars(fsom_untreated, title = "Low killing donors",
+                      nodeSizes = C_stats.ud3.lh["medians Low-killing", ],
+                      refNodeSize = max(C_stats.ud3.lh[c("medians Low-killing", "medians High-killing"),]),
+                      backgroundValues = fold_changes.ud3.lh,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+sbs.ud3.high <- PlotStars(fsom_untreated, title = "High killing donors",
+                      nodeSizes = C_stats.ud3.lh["medians High-killing", ],
+                      refNodeSize = max(C_stats.ud3.lh[c("medians Low-killing", "medians High-killing"),]),
+                      backgroundValues = fold_changes.ud3.lh,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+untreateddirect3.lh <- ggpubr::ggarrange(plotlist = list(sbs.ud3.low$tree, sbs.ud3.high$tree,
+                                       sbs.ud3.high$starLegend, sbs.ud3.high$backgroundLegend),
+                       ncol = 2, nrow = 2,
+                       heights = c(4, 1))
+                       
+# Moderate-high comparison
+groups.ud3.m.h <- list("Moderate-killing" = paste0(dir_u_prep, files_untreated[c(4,8)]),
+                  "High-killing" = paste0(dir_u_prep, files_untreated[c(7,9)]))
+MC_stats.ud3.mh <- GroupStats(percentages[["metacluster_percentages"]], groups.ud3.m.h)
+C_stats.ud3.mh <- GroupStats(percentages[["cluster_percentages"]], groups.ud3.m.h)
+fold_changes.ud3.mh <- C_stats.ud3.mh["fold changes", ]
+fold_changes.ud3.mh <- factor(ifelse(fold_changes.ud3.mh < -1, "Underrepresented compared to moderate killing group",
+                                 ifelse(fold_changes.ud3.mh > 1, "Overrepresented compared to moderate killing group",
+                                        "--")), levels = c("--", "Underrepresented compared to moderate killing group",
+                                                           "Overrepresented compared to moderate killing group"))
+fold_changes.ud3.mh[is.na(fold_changes.ud3.mh)] <- "--"
+sbs.ud3.mod <- PlotStars(fsom_untreated, title = "Moderate killing donors",
+                      nodeSizes = C_stats.ud3.mh["medians Moderate-killing", ],
+                      refNodeSize = max(C_stats.ud3.mh[c("medians Moderate-killing", "medians High-killing"),]),
+                      backgroundValues = fold_changes.ud3.mh,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+sbs.ud3.high <- PlotStars(fsom_untreated, title = "High killing donors",
+                      nodeSizes = C_stats.ud3.mh["medians High-killing", ],
+                      refNodeSize = max(C_stats.ud3.mh[c("medians Moderate-killing", "medians High-killing"),]),
+                      backgroundValues = fold_changes.ud3.mh,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+untreateddirect3.mh <- ggpubr::ggarrange(plotlist = list(sbs.ud3.mod$tree, sbs.ud3.high$tree,
+                                       sbs.ud3.high$starLegend, sbs.ud3.high$backgroundLegend),
+                       ncol = 2, nrow = 2,
+                       heights = c(4, 1))
+                       
+# Print all 3 comparisons per condition
+pdf("C:/Users/Me/OneDrive - University of Nebraska at Omaha/Administrative/Documents/FUSE 2023/PhenoData/Untreated/results/untreated_direct3_tree.pdf")
+untreateddirect3.lm
+untreateddirect3.lh
+untreateddirect3.mh
+dev.off()
+
+
+# Untreated-ADCC killing comparisons
+percentages <-GetFeatures(fsom = fsom_untreated,
+                            files = paste0(dir_u_prep, files_untreated),
+                            type = "percentages")
+                            
+# Low-moderate comparison
+groups.ud3.l.m <- list("Low-killing" = paste0(dir_u_prep, files_untreated[c(5,6)]),
+                  "Moderate-killing" = paste0(dir_u_prep, files_untreated[c(1:4,7)]))
+MC_stats.ud3.lm <- GroupStats(percentages[["metacluster_percentages"]], groups.ud3.l.m)
+C_stats.ud3.lm <- GroupStats(percentages[["cluster_percentages"]], groups.ud3.l.m)
+fold_changes.ud3.lm <- C_stats.ud3.lm["fold changes", ]
+fold_changes.ud3.lm <- factor(ifelse(fold_changes.ud3.lm < -1, "Underrepresented compared to low killing group",
+                                 ifelse(fold_changes.ud3.lm > 1, "Overrepresented compared to low killing group",
+                                        "--")), levels = c("--", "Underrepresented compared to low killing group",
+                                                           "Overrepresented compared to low killing group"))
+fold_changes.ud3.lm[is.na(fold_changes.ud3.lm)] <- "--"
+sbs.ud3.low <- PlotStars(fsom_untreated, title = "Low killing donors",
+                      nodeSizes = C_stats.ud3.lm["medians Low-killing", ],
+                      refNodeSize = max(C_stats.ud3.lm[c("medians Low-killing", "medians Moderate-killing"),]),
+                      backgroundValues = fold_changes.ud3.lm,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+sbs.ud3.mod <- PlotStars(fsom_untreated, title = "Moderate killing donors",
+                      nodeSizes = C_stats.ud3.lm["medians Moderate-killing", ],
+                      refNodeSize = max(C_stats.ud3.lm[c("medians Low-killing", "medians Moderate-killing"),]),
+                      backgroundValues = fold_changes.ud3.lm,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+untreateddirect3.lm <- ggpubr::ggarrange(plotlist = list(sbs.ud3.low$tree, sbs.ud3.mod$tree,
+                                       sbs.ud3.mod$starLegend, sbs.ud3.mod$backgroundLegend),
+                       ncol = 2, nrow = 2,
+                       heights = c(4, 1))
+                       
+# Low-high comparison
+groups.ud3.l.h <- list("Low-killing" = paste0(dir_u_prep, files_untreated[c(5,6)]),
+                  "High-killing" = paste0(dir_u_prep, files_untreated[c(8,9)]))
+MC_stats.ud3.lh <- GroupStats(percentages[["metacluster_percentages"]], groups.ud3.l.h)
+C_stats.ud3.lh <- GroupStats(percentages[["cluster_percentages"]], groups.ud3.l.h)
+fold_changes.ud3.lh <- C_stats.ud3.lh["fold changes", ]
+fold_changes.ud3.lh <- factor(ifelse(fold_changes.ud3.lh < -1, "Underrepresented compared to low killing group",
+                                 ifelse(fold_changes.ud3.lh > 1, "Overrepresented compared to low killing group",
+                                        "--")), levels = c("--", "Underrepresented compared to low killing group",
+                                                           "Overrepresented compared to low killing group"))
+fold_changes.ud3.lh[is.na(fold_changes.ud3.lh)] <- "--"
+sbs.ud3.low <- PlotStars(fsom_untreated, title = "Low killing donors",
+                      nodeSizes = C_stats.ud3.lh["medians Low-killing", ],
+                      refNodeSize = max(C_stats.ud3.lh[c("medians Low-killing", "medians High-killing"),]),
+                      backgroundValues = fold_changes.ud3.lh,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+sbs.ud3.high <- PlotStars(fsom_untreated, title = "High killing donors",
+                      nodeSizes = C_stats.ud3.lh["medians High-killing", ],
+                      refNodeSize = max(C_stats.ud3.lh[c("medians Low-killing", "medians High-killing"),]),
+                      backgroundValues = fold_changes.ud3.lh,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+untreateddirect3.lh <- ggpubr::ggarrange(plotlist = list(sbs.ud3.low$tree, sbs.ud3.high$tree,
+                                       sbs.ud3.high$starLegend, sbs.ud3.high$backgroundLegend),
+                       ncol = 2, nrow = 2,
+                       heights = c(4, 1))
+                       
+# Moderate-high comparison
+groups.ud3.m.h <- list("Moderate-killing" = paste0(dir_u_prep, files_untreated[c(1:4,7)]),
+                  "High-killing" = paste0(dir_u_prep, files_untreated[c(8,9)]))
+MC_stats.ud3.mh <- GroupStats(percentages[["metacluster_percentages"]], groups.ud3.m.h)
+C_stats.ud3.mh <- GroupStats(percentages[["cluster_percentages"]], groups.ud3.m.h)
+fold_changes.ud3.mh <- C_stats.ud3.mh["fold changes", ]
+fold_changes.ud3.mh <- factor(ifelse(fold_changes.ud3.mh < -1, "Underrepresented compared to moderate killing group",
+                                 ifelse(fold_changes.ud3.mh > 1, "Overrepresented compared to moderate killing group",
+                                        "--")), levels = c("--", "Underrepresented compared to moderate killing group",
+                                                           "Overrepresented compared to moderate killing group"))
+fold_changes.ud3.mh[is.na(fold_changes.ud3.mh)] <- "--"
+sbs.ud3.mod <- PlotStars(fsom_untreated, title = "Moderate killing donors",
+                      nodeSizes = C_stats.ud3.mh["medians Moderate-killing", ],
+                      refNodeSize = max(C_stats.ud3.mh[c("medians Moderate-killing", "medians High-killing"),]),
+                      backgroundValues = fold_changes.ud3.mh,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+sbs.ud3.high <- PlotStars(fsom_untreated, title = "High killing donors",
+                      nodeSizes = C_stats.ud3.mh["medians High-killing", ],
+                      refNodeSize = max(C_stats.ud3.mh[c("medians Moderate-killing", "medians High-killing"),]),
+                      backgroundValues = fold_changes.ud3.mh,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+untreateddirect3.mh <- ggpubr::ggarrange(plotlist = list(sbs.ud3.mod$tree, sbs.ud3.high$tree,
+                                       sbs.ud3.high$starLegend, sbs.ud3.high$backgroundLegend),
+                       ncol = 2, nrow = 2,
+                       heights = c(4, 1))
+                       
+# Print all 3 comparisons per condition
+pdf("C:/Users/Me/OneDrive - University of Nebraska at Omaha/Administrative/Documents/FUSE 2023/PhenoData/Untreated/results/untreated_ADCC3_tree.pdf")
+untreateddirect3.lm
+untreateddirect3.lh
+untreateddirect3.mh
+dev.off()
+
+
+# Untreated-paired killing comparisons
+percentages <-GetFeatures(fsom = fsom_untreated,
+                            files = paste0(dir_u_prep, files_untreated),
+                            type = "percentages")
+     
+# Low-moderate comparison
+groups.ud3.l.m <- list("Low-killing" = paste0(dir_u_prep, files_untreated[c(5,6)]),
+                  "Moderate-killing" = paste0(dir_u_prep, files_untreated[c(2:4,7)]))
+MC_stats.ud3.lm <- GroupStats(percentages[["metacluster_percentages"]], groups.ud3.l.m)
+C_stats.ud3.lm <- GroupStats(percentages[["cluster_percentages"]], groups.ud3.l.m)
+fold_changes.ud3.lm <- C_stats.ud3.lm["fold changes", ]
+fold_changes.ud3.lm <- factor(ifelse(fold_changes.ud3.lm < -1, "Underrepresented compared to low killing group",
+                                 ifelse(fold_changes.ud3.lm > 1, "Overrepresented compared to low killing group",
+                                        "--")), levels = c("--", "Underrepresented compared to low killing group",
+                                                           "Overrepresented compared to low killing group"))
+fold_changes.ud3.lm[is.na(fold_changes.ud3.lm)] <- "--"
+sbs.ud3.low <- PlotStars(fsom_untreated, title = "Low killing donors",
+                      nodeSizes = C_stats.ud3.lm["medians Low-killing", ],
+                      refNodeSize = max(C_stats.ud3.lm[c("medians Low-killing", "medians Moderate-killing"),]),
+                      backgroundValues = fold_changes.ud3.lm,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+sbs.ud3.mod <- PlotStars(fsom_untreated, title = "Moderate killing donors",
+                      nodeSizes = C_stats.ud3.lm["medians Moderate-killing", ],
+                      refNodeSize = max(C_stats.ud3.lm[c("medians Low-killing", "medians Moderate-killing"),]),
+                      backgroundValues = fold_changes.ud3.lm,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+untreateddirect3.lm <- ggpubr::ggarrange(plotlist = list(sbs.ud3.low$tree, sbs.ud3.mod$tree,
+                                       sbs.ud3.mod$starLegend, sbs.ud3.mod$backgroundLegend),
+                       ncol = 2, nrow = 2,
+                       heights = c(4, 1))
+                       
+# Low-high comparison
+groups.ud3.l.h <- list("Low-killing" = paste0(dir_u_prep, files_untreated[c(5,6)]),
+                  "High-killing" = paste0(dir_u_prep, files_untreated[c(8,9)]))
+MC_stats.ud3.lh <- GroupStats(percentages[["metacluster_percentages"]], groups.ud3.l.h)
+C_stats.ud3.lh <- GroupStats(percentages[["cluster_percentages"]], groups.ud3.l.h)
+fold_changes.ud3.lh <- C_stats.ud3.lh["fold changes", ]
+fold_changes.ud3.lh <- factor(ifelse(fold_changes.ud3.lh < -1, "Underrepresented compared to low killing group",
+                                 ifelse(fold_changes.ud3.lh > 1, "Overrepresented compared to low killing group",
+                                        "--")), levels = c("--", "Underrepresented compared to low killing group",
+                                                           "Overrepresented compared to low killing group"))
+fold_changes.ud3.lh[is.na(fold_changes.ud3.lh)] <- "--"
+sbs.ud3.low <- PlotStars(fsom_untreated, title = "Low killing donors",
+                      nodeSizes = C_stats.ud3.lh["medians Low-killing", ],
+                      refNodeSize = max(C_stats.ud3.lh[c("medians Low-killing", "medians High-killing"),]),
+                      backgroundValues = fold_changes.ud3.lh,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+sbs.ud3.high <- PlotStars(fsom_untreated, title = "High killing donors",
+                      nodeSizes = C_stats.ud3.lh["medians High-killing", ],
+                      refNodeSize = max(C_stats.ud3.lh[c("medians Low-killing", "medians High-killing"),]),
+                      backgroundValues = fold_changes.ud3.lh,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+untreateddirect3.lh <- ggpubr::ggarrange(plotlist = list(sbs.ud3.low$tree, sbs.ud3.high$tree,
+                                       sbs.ud3.high$starLegend, sbs.ud3.high$backgroundLegend),
+                       ncol = 2, nrow = 2,
+                       heights = c(4, 1))
+                       
+# Moderate-high comparison
+groups.ud3.m.h <- list("Moderate-killing" = paste0(dir_u_prep, files_untreated[c(2:4,7)]),
+                  "High-killing" = paste0(dir_u_prep, files_untreated[c(8,9)]))
+MC_stats.ud3.mh <- GroupStats(percentages[["metacluster_percentages"]], groups.ud3.m.h)
+C_stats.ud3.mh <- GroupStats(percentages[["cluster_percentages"]], groups.ud3.m.h)
+fold_changes.ud3.mh <- C_stats.ud3.mh["fold changes", ]
+fold_changes.ud3.mh <- factor(ifelse(fold_changes.ud3.mh < -1, "Underrepresented compared to moderate killing group",
+                                 ifelse(fold_changes.ud3.mh > 1, "Overrepresented compared to moderate killing group",
+                                        "--")), levels = c("--", "Underrepresented compared to moderate killing group",
+                                                           "Overrepresented compared to moderate killing group"))
+fold_changes.ud3.mh[is.na(fold_changes.ud3.mh)] <- "--"
+sbs.ud3.mod <- PlotStars(fsom_untreated, title = "Moderate killing donors",
+                      nodeSizes = C_stats.ud3.mh["medians Moderate-killing", ],
+                      refNodeSize = max(C_stats.ud3.mh[c("medians Moderate-killing", "medians High-killing"),]),
+                      backgroundValues = fold_changes.ud3.mh,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+sbs.ud3.high <- PlotStars(fsom_untreated, title = "High killing donors",
+                      nodeSizes = C_stats.ud3.mh["medians High-killing", ],
+                      refNodeSize = max(C_stats.ud3.mh[c("medians Moderate-killing", "medians High-killing"),]),
+                      backgroundValues = fold_changes.ud3.mh,
+                      backgroundColors = c("white", "red", "blue"),
+                      list_insteadof_ggarrange = TRUE)
+untreateddirect3.mh <- ggpubr::ggarrange(plotlist = list(sbs.ud3.mod$tree, sbs.ud3.high$tree,
+                                       sbs.ud3.high$starLegend, sbs.ud3.high$backgroundLegend),
+                       ncol = 2, nrow = 2,
+                       heights = c(4, 1))
+                       
+# Print all 3 comparisons per condition
+pdf("C:/Users/Me/OneDrive - University of Nebraska at Omaha/Administrative/Documents/FUSE 2023/PhenoData/Untreated/results/untreated_paired3_tree.pdf")
+untreateddirect3.lm
+untreateddirect3.lh
+untreateddirect3.mh
+dev.off()
